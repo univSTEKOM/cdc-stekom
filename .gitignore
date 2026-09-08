@@ -50,3 +50,8 @@ API-STATUS*.md
 
 # Claude Code local settings — per-machine permissions and paths.
 .claude/
+
+# Ekspor data ad-hoc (analisis loker, rekap posisi). Tidak dipakai aplikasi —
+# hanya berkas kerja lokal, dan ukurannya membengkakkan riwayat repo.
+*.csv
+*.xlsx

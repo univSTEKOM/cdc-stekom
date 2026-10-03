@@ -58,6 +58,12 @@ export const OfflineRecruitmentSchema = z.object({
   name: z.string().min(2, 'Nama minimal 2 karakter'),
   email: z.string().email('Email tidak valid'),
   phone: z.string().min(10, 'Nomor telepon minimal 10 digit').max(15),
+  interestedKuliahKerja: z.enum(['ya', 'tidak'], {
+    message: 'Silakan pilih salah satu',
+  }),
+  // Label link yang dipilih ("Daftar Hadir Offline" / "...Online").
+  attendance: z.string().min(1).max(120),
+  // URL halaman event, supaya baris di Google Sheet bisa langsung diklik.
   eventId: z.string().min(1),
 })
 

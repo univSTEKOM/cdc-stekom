@@ -44,5 +44,22 @@ export const CDC_SITEMAP_MAX_PER_PAGE = 5000
 export const VJF_API_URL = process.env.VJF_API_URL ?? 'https://toploker.com/curl/virtual_jobfair'
 export const getVjfKey = () => requireEnv('VJF_API_KEY')
 
+// ─── Jadwal Rekrutmen Offline (rekrutmen.stekom.ac.id) ───────────────────────
+// Publik, tanpa key (tapi wajib kirim User-Agent). Hanya memuat ringkasan
+// jadwal: judul, tanggal, lokasi.
+export const REKRUTMEN_API_URL =
+  process.env.REKRUTMEN_API_URL ?? 'https://rekrutmen.stekom.ac.id/api/rekrutmen/jadwal'
+// Detail (deskripsi, galeri, kapasitas) tidak punya endpoint JSON — hanya
+// halaman HTML di /agenda/:slug, yang di-parse oleh rekrutmen.service.ts.
+export const REKRUTMEN_AGENDA_URL =
+  process.env.REKRUTMEN_AGENDA_URL ?? 'https://rekrutmen.stekom.ac.id/agenda'
+
+// ─── Lead tracking PMB ───────────────────────────────────────────────────────
+// Setiap submit form (lamar loker, VJF, rekrutmen offline) juga dicatat ke
+// dashboard lead PMB. Dipanggil dari browser, jadi wajib NEXT_PUBLIC_.
+export const PMB_TRACKING_URL =
+  process.env.NEXT_PUBLIC_PMB_TRACKING_URL || 'https://pmb.stekom.ac.id/api/tracking/submit-direct'
+export const TRACKING_SOURCE_PAGE = 'cdc-web'
+
 // Use the real CDC API unless explicitly forced to mock
 export const USE_MOCK = process.env.USE_MOCK === 'true'

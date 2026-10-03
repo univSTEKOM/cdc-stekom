@@ -92,6 +92,22 @@ export interface RecruitmentEvent {
   positions?: string[]
   // Link pendaftaran eksternal (bit.ly) dari poster.
   registrationLinks?: { label: string; url: string }[]
+  // Rekrutmen offline (halaman agenda rekrutmen.stekom.ac.id):
+  // teks pengumuman asli bergaya WhatsApp (*tebal*, baris baru dipertahankan).
+  announcement?: string
+  // Diturunkan dari announcement: paragraf pembuka & syarat peserta.
+  intro?: string
+  requirements?: string[]
+  gallery?: string[]
+  // VJF (deskripsi TopLoker yang dipecah per bagian):
+  stats?: { value: string; label: string }[]
+  benefits?: string[]
+  speakers?: { role: string; name: string; title?: string }[]
+  eventLinks?: { label: string; url: string; note?: string }[]
+  companyContact?: { label: string; url: string }
+  hostedBy?: string
+  capacity?: string
+  category?: string
 }
 
 export interface EventsResponse {

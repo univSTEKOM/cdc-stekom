@@ -22,7 +22,8 @@ const csp = [
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
   // XHR/fetch targets — keep tight to the APIs we actually call.
-  "connect-src 'self' https://cdc.stekom.ac.id https://toploker.com https://www.instagram.com",
+  // pmb.stekom.ac.id: lead tracking dari browser (lib/lead-tracking.ts).
+  "connect-src 'self' https://cdc.stekom.ac.id https://toploker.com https://www.instagram.com https://pmb.stekom.ac.id",
   // Form posts (VJF → WhatsApp, applications → Google Apps Script).
   "form-action 'self' https://wa.me https://script.google.com",
   // Nobody may embed us in an <iframe> (clickjacking). Kita sendiri hanya
@@ -105,6 +106,13 @@ const nextConfig: NextConfig = {
         // Indeks daftar CI tanpa petunjuk daerah sama sekali.
         source: "/daftar",
         destination: "/loker",
+        permanent: true,
+      },
+      {
+        // Slug buatan sendiri dari masa data rekrutmen offline masih mock;
+        // sekarang slug mengikuti API rekrutmen.stekom.ac.id.
+        source: "/event/walk-in-interview-pt-artha-abadi-batch-23",
+        destination: "/event/rekrutmen-pt-inti-artha-abadi-20260828100808",
         permanent: true,
       },
     ];

@@ -18,6 +18,7 @@ import {
 import { JobApplicationSchema, type JobApplicationData } from '@/lib/validators'
 import { submitForm } from '@/services/forms.service'
 import { useApplicantProfile } from '@/hooks/useApplicantProfile'
+import { trackLead } from '@/lib/lead-tracking'
 
 interface JobApplicationFormProps {
   jobId: string
@@ -158,6 +159,26 @@ export function JobApplicationForm({ jobId, jobTitle, company, whatsappUrl, emai
       graduationYear: data.graduationYear,
       interestedKuliahKerja: data.interestedKuliahKerja,
       cvLink: data.cvLink,
+    })
+
+    // Lead PMB: dikirim paralel & non-blocking, apa pun hasil spreadsheet.
+    trackLead({
+      nama: data.name,
+      email: data.email,
+      phone: data.phone,
+      form: 'Lamar Loker CDC',
+      button: { id: 'job-apply-form', label: 'Lamar Sekarang', section: 'apply-dialog' },
+      extra: {
+        address: data.address,
+        position: jobTitle,
+        company: company ?? '',
+        jobUrl: data.jobId,
+        education: data.education === 'lainnya'
+          ? data.educationOther?.trim()
+          : EDUCATION_OPTIONS.find((o) => o.value === data.education)?.label,
+        graduationYear: data.graduationYear,
+        interestedKuliahKerja: data.interestedKuliahKerja,
+      },
     })
 
     // Perekaman ke spreadsheet TIDAK boleh memblokir lamaran. Kalau webhook

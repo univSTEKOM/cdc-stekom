@@ -51,42 +51,16 @@ export const mockEvents: RecruitmentEvent[] = [
     registrationDeadline: '2025-08-02T23:59:00Z',
     jobs: mockJobs.slice(0, 3),
   },
-
-  // ── Rekrutmen Offline ────────────────────────────────────────────────────
-  // Hanya satu batch aktif — batch terbaru saja, sesuai pengumuman Instagram CDC.
-  // Waktu di poster WIB (UTC+7): 08.30–12.00 WIB → 01:30Z–05:00Z.
-  //
-  // CATATAN: field `status` di bawah TIDAK dipakai — events.service.ts selalu
-  // menghitung ulang dari `date`/`endDate` (lihat computeEventStatus). Cukup
-  // perbarui tanggalnya; status ikut menyesuaikan sendiri.
-  {
-    id: 'offline-batch-23',
-    slug: 'walk-in-interview-pt-artha-abadi-batch-23',
-    title: 'Walk In Interview PT ARTHA ABADI — Batch 23',
-    type: 'offline',
-    batch: 23,
-    status: 'upcoming',
-    description:
-      'PELUANG KERJA EKSKLUSIF DARI MITRA INDUSTRI UNIVSTEKOM. Walk In Interview bersama PT ARTHA ABADI — bertemu langsung dan berkenalan dengan HRD perusahaan besar.\n\nTERBUKA UNTUK UMUM\nMinimal lulusan SMK/SMA/MA/sederajat/D3/S1.',
-    date: '2026-08-11T01:30:00Z',
-    endDate: '2026-08-11T05:00:00Z',
-    location: 'Ruang Serbaguna Lt. 3, Universitas STEKOM (Jl. Majapahit No. 605, Semarang)',
-    organizer: 'CDC Universitas Stekom',
-    instagramUrl: 'https://www.instagram.com/p/DbsE_8RJUCG/',
-    positions: [
-      'Sosial Media Specialist (SMA/SMK)',
-      'Leader Event Organizer (D3/S1)',
-      'Design Grafis (SMA/SMK)',
-      'Tukang Kayu HPL (SMA/SMK)',
-      'Staff Pajak (D3/S1)',
-      'Manager Operasional/Logistik (D3/S1)',
-      'Sales Advisor (SMA/SMK)',
-      'Team Leader Sales (D3/S1)',
-      'Export Import (D3/S1)',
-    ],
-    registrationLinks: [
-      { label: 'Daftar Hadir Offline', url: 'https://bit.ly/daftar-offlinebatch23' },
-      { label: 'Daftar Hadir Online', url: 'https://bit.ly/daftar-onlinebatch23' },
-    ],
-  },
 ]
+
+export type OfflineEventExtras = Partial<
+  Pick<RecruitmentEvent, 'instagramUrl' | 'positions' | 'registrationLinks'>
+>
+
+// ── Rekrutmen Offline ──────────────────────────────────────────────────────
+// Jadwal dan isi pengumuman diambil dari rekrutmen.stekom.ac.id — lihat
+// services/rekrutmen.service.ts. Yang tidak ada di sana (embed IG) atau perlu
+// dikoreksi manual ditaruh di sini, dikunci per nomor batch.
+export const offlineEventExtras: Partial<Record<number, OfflineEventExtras>> = {
+  23: { instagramUrl: 'https://www.instagram.com/p/DbsE_8RJUCG/' },
+}

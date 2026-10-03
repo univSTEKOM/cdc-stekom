@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/select'
 import { VJFRegistrationSchema, type VJFRegistrationData } from '@/lib/validators'
 import { submitForm } from '@/services/forms.service'
+import { trackLead } from '@/lib/lead-tracking'
 
 // Capture utm_* params from the current URL so they can be sent to the sheet.
 function getUtmParams(): Record<string, string> {
@@ -42,6 +43,14 @@ export function VJFRegistrationForm({ eventId, eventTitle }: VJFRegistrationForm
   })
 
   async function onSubmit(data: VJFRegistrationData) {
+    trackLead({
+      nama: data.name,
+      email: data.email,
+      phone: data.phone,
+      form: 'Daftar Virtual Job Fair CDC',
+      button: { id: 'vjf-registration-form', label: 'Daftar Sekarang', section: 'sidebar' },
+      extra: { event: eventTitle, eventId: data.eventId, interestedKuliahKerja: data.interestedKuliahKerja },
+    })
     await submitForm({
       formType: 'vjf',
       data: {

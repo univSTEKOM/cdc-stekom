@@ -5,6 +5,7 @@ import './globals.css'
 import { Navbar } from '@/components/shared/Navbar'
 import { Footer } from '@/components/shared/Footer'
 import { JsonLd } from '@/components/shared/JsonLd'
+import { LeadTrackingInit } from '@/components/shared/LeadTrackingInit'
 import { websiteSchema, organizationSchema } from '@/lib/schema'
 import { SITE_URL } from '@/config/api'
 
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
+        <LeadTrackingInit />
       </body>
     </html>
   )

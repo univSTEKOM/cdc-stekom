@@ -65,6 +65,8 @@ export function generateEventMetadata(event: RecruitmentEvent): Metadata {
   const title = `${event.title} | CDC Universitas Stekom`
   const description = `Daftarkan diri ke ${event.title} di ${event.location}. ${event.description.slice(0, 120)}...`
   const url = `${SITE_URL}/event/${event.slug}`
+  // Poster rekrutmen offline ada di galeri, bukan banner.
+  const ogImage = event.banner ?? event.gallery?.[0]
 
   return {
     title,
@@ -76,7 +78,7 @@ export function generateEventMetadata(event: RecruitmentEvent): Metadata {
       url,
       type: 'article',
       // Use the event banner when available; otherwise Next's dynamic OG applies.
-      ...(event.banner ? { images: [{ url: event.banner, width: 1200, height: 630 }] } : {}),
+      ...(ogImage ? { images: [{ url: ogImage }] } : {}),
     },
     twitter: {
       card: 'summary_large_image',

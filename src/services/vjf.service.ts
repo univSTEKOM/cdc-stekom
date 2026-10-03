@@ -2,6 +2,8 @@ import { cache } from 'react'
 import { VJF_API_URL, getVjfKey, REVALIDATE_EVENTS } from '@/config/api'
 import type { RecruitmentEvent } from '@/types'
 import { computeEventStatus } from '@/lib/events'
+import { decodeEntities, htmlToText } from '@/lib/html'
+import { parseVjfDescription } from '@/lib/vjf-description'
 
 // ─── Raw API shape (toploker.com/curl/virtual_jobfair) ───────────────────────────
 
@@ -21,38 +23,6 @@ interface RawVjf {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function decodeEntities(s: string): string {
-  let prev = ''
-  let out = s
-  // decode repeatedly to undo double/triple encoding (&amp;amp;)
-  for (let i = 0; i < 5 && out !== prev; i++) {
-    prev = out
-    out = out
-      .replace(/&quot;/g, '"')
-      .replace(/&#0?39;/g, "'")
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&nbsp;/g, ' ')
-      .replace(/&amp;/g, '&')
-  }
-  return out
-}
-
-// The description is messy HTML (junk attributes like xss=removed, empty style
-// fragments). Strip ALL tags and keep readable text — the detail page can show
-// it as a clean paragraph rather than rendering broken markup.
-function htmlToText(html: string): string {
-  return decodeEntities(html)
-    .replace(/<\s*(br|\/p|\/h[1-6]|\/div|\/li)\s*\/?>/gi, '\n')
-    .replace(/<\s*li[^>]*>/gi, '\n• ')
-    .replace(/<[^>]*>/g, '')
-    .replace(/ /g, ' ')
-    .replace(/[ \t]*\n[ \t]*/g, '\n')
-    .replace(/\n{3,}/g, '\n\n')
-    .replace(/[ \t]{2,}/g, ' ')
-    .trim()
-}
-
 function cleanTitle(t: string): string {
   // drop the trailing "#90" batch marker and collapse whitespace
   return decodeEntities(t).replace(/#\d+\s*$/, '').replace(/\s+/g, ' ').trim()
@@ -65,13 +35,16 @@ function batchFromTitle(t: string): number {
 }
 
 function mapVjf(raw: RawVjf): RecruitmentEvent {
+  // Deskripsi TopLoker = satu blok teks tanpa baris baru; dipecah per bagian
+  // (link acara, pembicara, dst.) oleh parseVjfDescription.
+  const { fullText, ...detail } = parseVjfDescription(htmlToText(raw.description))
   return {
     id: raw.id,
     slug: raw.slug,
     title: cleanTitle(raw.title),
     type: 'vjf',
     batch: batchFromTitle(raw.title),
-    description: htmlToText(raw.description),
+    description: fullText,
     date: raw.tanggal_mulai,
     endDate: raw.tanggal_selesai || undefined,
     location: decodeEntities(raw.lokasi || '').trim() || 'Online',
@@ -79,6 +52,7 @@ function mapVjf(raw: RawVjf): RecruitmentEvent {
     banner: raw.banner || undefined,
     registrationDeadline: raw.batas_daftar || undefined,
     status: computeEventStatus(raw.tanggal_mulai, raw.tanggal_selesai),
+    ...detail,
   }
 }
 

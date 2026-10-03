@@ -124,7 +124,7 @@ export default async function VJFPage() {
 
                     <div>
                       <p className="font-semibold text-brand-text leading-snug">{ev.title}</p>
-                      <p className="mt-1 text-xs text-brand-muted line-clamp-2">{ev.description}</p>
+                      <p className="mt-1 text-xs text-brand-muted line-clamp-2">{ev.intro ?? ev.description}</p>
                     </div>
 
                     <div className="space-y-1.5 text-sm text-brand-muted">

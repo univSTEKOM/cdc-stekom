@@ -38,7 +38,7 @@ export function Footer() {
             <ul className="mt-3 space-y-2 text-sm text-[#CBD5E1]">
               <li><Link href="/event" className="hover:text-white transition-colors duration-200 cursor-pointer">Semua Event</Link></li>
               <li><Link href="/event/vjf" className="hover:text-white transition-colors duration-200 cursor-pointer">Virtual Job Fair</Link></li>
-              <li><Link href="/event/offline-recruitment" className="hover:text-white transition-colors duration-200 cursor-pointer">Rekrutmen Offline</Link></li>
+              <li><Link href="/event/rekrutmen" className="hover:text-white transition-colors duration-200 cursor-pointer">Rekrutmen</Link></li>
             </ul>
           </div>
 

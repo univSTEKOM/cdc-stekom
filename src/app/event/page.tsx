@@ -13,7 +13,7 @@ export const revalidate = 3600
 export const metadata: Metadata = generateListingMetadata({
   title: 'Event Rekrutmen & Job Fair | CDC Universitas Stekom',
   description:
-    'Virtual Job Fair dan Rekrutmen Offline dari CDC Universitas Stekom. Daftarkan diri dan temukan peluang karir langsung dari rekruter.',
+    'Virtual Job Fair dan Rekrutmen dari CDC Universitas Stekom. Daftarkan diri, offline maupun online, dan temukan peluang karir langsung dari rekruter.',
   path: '/event',
 })
 
@@ -33,7 +33,7 @@ export default async function EventPage() {
             Event Rekrutmen
           </h1>
           <p className="mt-1 text-sm text-brand-muted">
-            Job Fair, Virtual Job Fair, dan Rekrutmen Offline dari CDC Universitas Stekom
+            Virtual Job Fair dan Rekrutmen dari CDC Universitas Stekom
           </p>
         </div>
       </div>
@@ -59,7 +59,7 @@ export default async function EventPage() {
           </Link>
 
           <Link
-            href="/event/offline-recruitment"
+            href="/event/rekrutmen"
             className="group flex gap-4 rounded-lg border-2 border-cta/30 bg-cta/5 p-6 transition-all duration-200 hover:border-cta cursor-pointer"
           >
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-cta/10">
@@ -67,10 +67,10 @@ export default async function EventPage() {
             </div>
             <div>
               <h2 className="font-semibold text-brand-text group-hover:text-cta transition-colors">
-                Rekrutmen Offline
+                Rekrutmen
               </h2>
               <p className="mt-1 text-sm text-brand-muted">
-                Rekrutmen langsung di kampus Universitas STEKOM. Seleksi on-the-spot dengan rekruter.
+                Seleksi langsung dengan rekruter perusahaan. Ikut di kampus Universitas STEKOM atau daftar online.
               </p>
             </div>
           </Link>
@@ -94,7 +94,7 @@ export default async function EventPage() {
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <Badge variant="secondary" className="text-xs">
-                      {ev.type === 'vjf' ? 'Virtual Job Fair' : 'Rekrutmen Offline'}
+                      {ev.type === 'vjf' ? 'Virtual Job Fair' : 'Rekrutmen'}
                     </Badge>
                   </div>
                   <h3 className="font-semibold text-brand-text group-hover:text-primary transition-colors">

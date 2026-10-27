@@ -28,7 +28,7 @@ const PERKS = [
   'Setiap hari mendapat premium akses ke 1.000 lowongan kerja terbaru',
   'Relasi perusahaan super banyak, lebih dari 500.000 perusahaan se-Indonesia',
   'Setiap hari ada Live TikTok lowongan kerja dan tips karir',
-  'Setiap minggu ada rekrutmen offline dari perusahaan besar',
+  'Setiap minggu ada rekrutmen dari perusahaan besar, bisa offline maupun online',
   'Setiap minggu ada Pelatihan HRD, pengembangan skill kerja dan kesiapan karir',
   'Setiap bulan rutin ada JOBFAIR Nasional bersama perusahaan ternama',
   'Seluruh mahasiswa berbudaya bisa kuliah sambil bekerja, bisa kerja sambil kuliah',
@@ -281,14 +281,14 @@ export default async function HomePage() {
               </div>
             </div>
 
-            {/* Rekrutmen Offline — light bg + orange */}
+            {/* Rekrutmen — light bg + orange */}
             <div className="relative rounded-2xl overflow-hidden bg-brand-bg border border-border flex min-h-[220px]">
               <div className="flex-1 flex flex-col justify-center gap-4 p-8 z-10">
                 <Badge className="w-fit bg-orange-100 text-orange-700 border-0 hover:bg-orange-100 text-xs">
-                  Rekrutmen Offline
+                  Rekrutmen
                 </Badge>
                 <h3 className="text-xl font-bold text-brand-text leading-snug max-w-[260px]">
-                  Hadir langsung dan jalani seleksi on-the-spot
+                  Ikut seleksi langsung di kampus atau daftar online
                 </h3>
                 {offlineEvents[0] && (
                   <p className="text-sm text-brand-muted flex items-center gap-1.5">
@@ -297,7 +297,7 @@ export default async function HomePage() {
                   </p>
                 )}
                 <Button
-                  render={<Link href="/event/offline-recruitment" />}
+                  render={<Link href="/event/rekrutmen" />}
                   className="cursor-pointer w-fit bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6"
                 >
                   Daftar Rekrutmen
@@ -307,7 +307,7 @@ export default async function HomePage() {
               <div className="hidden sm:block w-[42%] relative shrink-0">
                 <Image
                   src="/images/event-offline.webp"
-                  alt="Rekrutmen Offline: peserta dan panitia di aula seleksi"
+                  alt="Rekrutmen: peserta dan panitia di aula seleksi"
                   fill
                   sizes="(max-width: 640px) 0px, 42vw"
                   className="object-cover object-[center_100%]"

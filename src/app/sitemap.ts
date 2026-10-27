@@ -47,7 +47,7 @@ export default async function sitemap(props: { id: Promise<string> }): Promise<M
       { url: `${SITE_URL}/kategori`,                     lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
       { url: `${SITE_URL}/event`,                        lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
       { url: `${SITE_URL}/event/vjf`,                    lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
-      { url: `${SITE_URL}/event/offline-recruitment`,    lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
+      { url: `${SITE_URL}/event/rekrutmen`,    lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     ]
   }
 

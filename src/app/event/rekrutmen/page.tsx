@@ -13,10 +13,10 @@ import { breadcrumbSchema } from '@/lib/schema'
 export const revalidate = 3600
 
 export const metadata: Metadata = generateListingMetadata({
-  title: 'Rekrutmen Offline Kampus STEKOM | Semua Batch',
+  title: 'Rekrutmen Universitas STEKOM | Jadwal Semua Batch',
   description:
-    'Daftar seluruh batch Rekrutmen Offline di kampus Universitas STEKOM. Temui rekruter langsung dan jalani seleksi on the spot. Gratis untuk semua peserta.',
-  path: '/event/offline-recruitment',
+    'Jadwal seluruh batch Rekrutmen CDC Universitas STEKOM. Ikuti seleksi langsung di kampus atau secara online, gratis untuk semua peserta.',
+  path: '/event/rekrutmen',
 })
 
 const crumbs = [
@@ -36,41 +36,45 @@ function fmtDateShort(iso: string) {
   })
 }
 
-export default async function OfflineRecruitmentPage() {
+export default async function RecruitmentPage() {
   const events = await fetchEvents()
-  const offlineBatches = events
+  const batches = events
     .filter((e) => e.type === 'offline')
     .sort((a, b) => b.batch - a.batch) // newest first
 
-  const upcoming = offlineBatches.filter((e) => e.status === 'upcoming' || e.status === 'ongoing')
-  const past     = offlineBatches.filter((e) => e.status === 'past')
+  const upcoming = batches.filter((e) => e.status === 'upcoming' || e.status === 'ongoing')
+  const past     = batches.filter((e) => e.status === 'past')
 
   return (
     <>
-      <JsonLd schema={breadcrumbSchema([...crumbs, { label: 'Rekrutmen Offline', href: '/event/offline-recruitment' }])} />
+      <JsonLd schema={breadcrumbSchema([...crumbs, { label: 'Rekrutmen', href: '/event/rekrutmen' }])} />
 
       {/* Hero */}
       <section className="border-b border-border bg-brand-bg">
         <div className="site-container py-10">
-          <Breadcrumbs crumbs={crumbs} currentLabel="Rekrutmen Offline" />
+          <Breadcrumbs crumbs={crumbs} currentLabel="Rekrutmen" />
           <Badge className="mt-4 bg-cta/10 text-cta hover:bg-cta/10 border-0">
-            Rekrutmen Offline
+            Rekrutmen
           </Badge>
           <h1 className="mt-2 text-3xl font-bold text-brand-text sm:text-4xl">
-            Rekrutmen Offline Kampus STEKOM
+            Rekrutmen Perusahaan di Universitas STEKOM
           </h1>
           <p className="mt-3 text-brand-muted max-w-2xl">
-            Perusahaan datang langsung ke kampus. Bawa CV terbaikmu, jalani wawancara on-the-spot, dan pulang membawa tawaran kerja.
+            Perusahaan membuka seleksi bersama CDC Universitas STEKOM hampir setiap minggu. Pilih cara ikut yang paling pas: datang langsung ke kampus atau daftar online, lalu jalani seleksi dengan rekruternya.
           </p>
 
           <div className="mt-5 flex flex-wrap gap-3 text-sm">
             <span className="flex items-center gap-1.5 text-brand-muted">
               <CalendarDays className="h-4 w-4 text-cta" />
-              {offlineBatches.length} Batch Diselenggarakan
+              {batches.length} Batch Diselenggarakan
             </span>
             <span className="flex items-center gap-1.5 text-brand-muted">
               <CheckCircle2 className="h-4 w-4 text-cta" />
               Gratis untuk semua peserta
+            </span>
+            <span className="flex items-center gap-1.5 text-brand-muted">
+              <MapPin className="h-4 w-4 text-cta" />
+              Hadir di kampus atau online
             </span>
           </div>
         </div>
@@ -234,8 +238,8 @@ export default async function OfflineRecruitmentPage() {
           </section>
         )}
 
-        {offlineBatches.length === 0 && (
-          <p className="text-brand-muted text-sm">Belum ada rekrutmen offline yang dijadwalkan.</p>
+        {batches.length === 0 && (
+          <p className="text-brand-muted text-sm">Belum ada rekrutmen yang dijadwalkan.</p>
         )}
       </div>
     </>

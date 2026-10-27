@@ -115,6 +115,12 @@ const nextConfig: NextConfig = {
         destination: "/event/rekrutmen-pt-inti-artha-abadi-20260828100808",
         permanent: true,
       },
+      {
+        // Rekrutmen tidak lagi khusus offline — pendaftarannya bisa online juga.
+        source: "/event/offline-recruitment",
+        destination: "/event/rekrutmen",
+        permanent: true,
+      },
     ];
   },
   // Standalone output for Docker/VPS deployment (Dokploy).

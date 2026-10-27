@@ -120,8 +120,8 @@ export default async function EventDetailPage({ params }: PageProps) {
     { label: 'Beranda', href: '/' },
     { label: 'Event', href: '/event' },
     {
-      label: isVjf ? 'Virtual Job Fair' : 'Rekrutmen Offline',
-      href: isVjf ? '/event/vjf' : '/event/offline-recruitment',
+      label: isVjf ? 'Virtual Job Fair' : 'Rekrutmen',
+      href: isVjf ? '/event/vjf' : '/event/rekrutmen',
     },
   ]
   const listHref = crumbs[2].href
@@ -210,7 +210,7 @@ export default async function EventDetailPage({ params }: PageProps) {
                 <Badge
                   className={`border-0 ${isVjf ? 'bg-primary/10 text-primary hover:bg-primary/10' : 'bg-cta/10 text-cta hover:bg-cta/10'}`}
                 >
-                  {isVjf ? 'Virtual Job Fair' : 'Rekrutmen Offline'}
+                  {isVjf ? 'Virtual Job Fair' : 'Rekrutmen'}
                 </Badge>
                 {event.batch > 0 && (
                   <Badge variant="outline" className="bg-white text-brand-text">
@@ -528,8 +528,8 @@ export default async function EventDetailPage({ params }: PageProps) {
             )}
           </div>
 
-          {/* Sidebar: VJF pakai form sendiri; rekrutmen offline mendaftar lewat
-              link resmi di poster, jadi tidak ada form di sini. */}
+          {/* Sidebar: VJF pakai form sendiri; rekrutmen mendaftar (offline/online)
+              lewat link resmi di poster, jadi tidak ada form di sini. */}
           <aside className="w-full">
             {isVjf ? (
               <div className="sticky top-20 space-y-4">
@@ -581,7 +581,7 @@ export default async function EventDetailPage({ params }: PageProps) {
                     <div className="border-t border-border p-5">
                       <p className="text-sm font-semibold text-brand-text">Acara ini sudah selesai</p>
                       <p className="mt-1 text-sm leading-relaxed text-brand-muted">
-                        Rekrutmen offline diadakan hampir setiap minggu. Cek jadwal batch berikutnya.
+                        Rekrutmen diadakan hampir setiap minggu. Cek jadwal batch berikutnya.
                       </p>
                       <Link
                         href={listHref}
@@ -596,10 +596,10 @@ export default async function EventDetailPage({ params }: PageProps) {
 
                 {!isPast && (
                   <div className="rounded-xl bg-brand-bg p-5 text-sm text-brand-muted">
-                    <p className="font-semibold text-brand-text">Yang perlu dibawa</p>
+                    <p className="font-semibold text-brand-text">Persiapan</p>
                     <p className="mt-1.5 leading-relaxed">
-                      Bawa CV, fotokopi ijazah, dan kartu identitas. Datang 30 menit
-                      sebelum acara dimulai.
+                      Siapkan CV, ijazah, dan kartu identitas. Hadir di lokasi 30 menit
+                      sebelum acara dimulai, atau bergabung tepat waktu bila ikut online.
                     </p>
                   </div>
                 )}

@@ -1,9 +1,9 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { Menu, X } from 'lucide-react'
+import { ArrowRight, CalendarDays, ChevronDown, Menu, MapPin, X } from 'lucide-react'
 
 const NAV_LINKS = [
   // Logo memang menuju "/", tapi itu tidak jelas sebagai navigasi — terutama di
@@ -12,8 +12,22 @@ const NAV_LINKS = [
   { label: 'Cari Lowongan', href: '/loker' },
   { label: 'Kategori', href: '/kategori' },
   { label: 'Lokasi', href: '/daerah' },
-  { label: 'Rekrutmen Offline', href: '/event/offline-recruitment' },
-  { label: 'Virtual Job Fair', href: '/event/vjf' },
+]
+
+// Dikelompokkan di bawah "Event" supaya navbar tidak penuh oleh tiap jenis acara.
+const EVENT_LINKS = [
+  {
+    label: 'Virtual Job Fair',
+    href: '/event/vjf',
+    description: 'Ketemu ratusan rekruter dari rumah via Zoom',
+    Icon: CalendarDays,
+  },
+  {
+    label: 'Rekrutmen',
+    href: '/event/rekrutmen',
+    description: 'Seleksi langsung di kampus atau daftar online',
+    Icon: MapPin,
+  },
 ]
 
 // lucide-react tidak menyertakan ikon brand, jadi logo WhatsApp digambar inline.
@@ -36,6 +50,93 @@ function isActive(pathname: string, href: string) {
   if (href.includes('#')) return false
   if (href === '/') return pathname === '/'
   return pathname.startsWith(href)
+}
+
+// Terbuka saat hover (desktop) maupun klik (layar sentuh/keyboard).
+function EventMenu({ pathname }: { pathname: string }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+  const active = pathname.startsWith('/event')
+
+  useEffect(() => {
+    if (!open) return
+    function onPointer(e: PointerEvent) {
+      if (!ref.current?.contains(e.target as Node)) setOpen(false)
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('pointerdown', onPointer)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('pointerdown', onPointer)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
+  return (
+    <div
+      ref={ref}
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-haspopup="true"
+        className={`relative flex items-center gap-1 px-3 py-2 text-[13px] font-medium rounded-md transition-colors duration-150 cursor-pointer ${
+          active
+            ? 'text-primary'
+            : 'text-brand-muted hover:text-brand-text hover:bg-muted'
+        }`}
+      >
+        Event
+        <ChevronDown
+          className={`h-3.5 w-3.5 transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
+          aria-hidden="true"
+        />
+        {active && (
+          <span className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full bg-primary" />
+        )}
+      </button>
+
+      {open && (
+        // pt-2 menjembatani celah ke tombol supaya hover tidak putus.
+        <div className="absolute left-0 top-full pt-2">
+          <div className="w-72 rounded-xl border border-border bg-white p-2 shadow-lg">
+            {EVENT_LINKS.map(({ label, href, description, Icon }) => (
+              <Link
+                key={label}
+                href={href}
+                onClick={() => setOpen(false)}
+                className={`flex gap-3 rounded-lg p-3 transition-colors hover:bg-muted ${
+                  isActive(pathname, href) ? 'bg-primary/5' : ''
+                }`}
+              >
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                  <Icon className="h-4.5 w-4.5 text-primary" aria-hidden="true" />
+                </span>
+                <span>
+                  <span className="block text-sm font-semibold text-brand-text">{label}</span>
+                  <span className="mt-0.5 block text-xs leading-snug text-brand-muted">{description}</span>
+                </span>
+              </Link>
+            ))}
+            <Link
+              href="/event"
+              onClick={() => setOpen(false)}
+              className="mt-1 flex items-center justify-between rounded-lg border-t border-border px-3 pb-2 pt-3 text-xs font-medium text-primary hover:underline"
+            >
+              Lihat semua event
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </Link>
+          </div>
+        </div>
+      )}
+    </div>
+  )
 }
 
 export function Navbar() {
@@ -84,6 +185,7 @@ export function Navbar() {
               </Link>
             )
           })}
+          <EventMenu pathname={pathname} />
         </nav>
 
         {/* Right side */}
@@ -129,6 +231,27 @@ export function Navbar() {
                       : 'text-brand-muted hover:text-brand-text hover:bg-muted'
                   }`}
                 >
+                  {label}
+                </Link>
+              )
+            })}
+            <p className="mt-2 px-3 pt-2 text-[11px] font-semibold uppercase tracking-wider text-brand-muted/70">
+              Event
+            </p>
+            {EVENT_LINKS.map(({ label, href, Icon }) => {
+              const active = isActive(pathname, href)
+              return (
+                <Link
+                  key={label}
+                  href={href}
+                  onClick={() => setOpen(false)}
+                  className={`flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium rounded-lg transition-colors ${
+                    active
+                      ? 'bg-primary/8 text-primary'
+                      : 'text-brand-muted hover:text-brand-text hover:bg-muted'
+                  }`}
+                >
+                  <Icon className="h-4 w-4" aria-hidden="true" />
                   {label}
                 </Link>
               )

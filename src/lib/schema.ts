@@ -110,9 +110,12 @@ export function eventSchema(event: RecruitmentEvent): object {
     },
     url: `${SITE_URL}/event/${event.slug}`,
     eventStatus: 'https://schema.org/EventScheduled',
+    // Rekrutmen yang punya link "Daftar Hadir Online" bisa diikuti dari dua jalur.
     eventAttendanceMode: event.type === 'vjf'
       ? 'https://schema.org/OnlineEventAttendanceMode'
-      : 'https://schema.org/OfflineEventAttendanceMode',
+      : event.registrationLinks?.some((l) => /online/i.test(l.label))
+        ? 'https://schema.org/MixedEventAttendanceMode'
+        : 'https://schema.org/OfflineEventAttendanceMode',
   }
 }
 
